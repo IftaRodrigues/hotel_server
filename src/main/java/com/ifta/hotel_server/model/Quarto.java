@@ -5,13 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Quarto implements Cadastro, Serializable {
-    /*perguntar para o prof sobre essa questão dos relacionamentos no hibernate*/
-    @OneToOne
+
+    @ManyToOne
     private Andar andar_quarto;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
