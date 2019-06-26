@@ -1,6 +1,7 @@
 package com.ifta.hotel_server.config;
 
 import com.ifta.hotel_server.dao.DAO;
+import com.ifta.hotel_server.dao.HotelDAO;
 import com.ifta.hotel_server.dao.JpaDAO;
 import com.ifta.hotel_server.model.Cadastro;
 import java.lang.reflect.ParameterizedType;
@@ -19,5 +20,10 @@ public class Producers {
         ParameterizedType t = (ParameterizedType) ip.getType();
         Class classe = (Class) t.getActualTypeArguments()[0];
         return new JpaDAO(em, classe);
+    }
+   
+    @Produces
+    public HotelDAO getHotelDao(InjectionPoint ip){
+        return new HotelDAO(em);
     }
 }

@@ -7,9 +7,10 @@ package com.ifta.hotel_server.rest;
 
 
 import com.ifta.hotel_server.dao.DAO;
-import com.ifta.hotel_server.dao.JpaDAO;
+import com.ifta.hotel_server.dao.HotelDAO;
 import com.ifta.hotel_server.model.Andar;
-import com.ifta.hotel_server.model.Quarto;
+import com.ifta.hotel_server.model.Hotel;
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -25,29 +26,28 @@ import javax.ws.rs.core.MediaType;
  * @author ifta
  */
 @Path("/quarto")
-public class QuartoResource {
+public class HotelResource {
     @Inject
-    private DAO<Quarto> dao;
+    private HotelDAO dao;
     
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Quarto findById(@PathParam("id") long id) {
+    public Hotel findById(@PathParam("id") long id) {
         return dao.findById(id);
     }
-    
+     
     @GET
-    @Path("{preco}/{andar}")
+    @Path("{cidadeId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Quarto findByPrecoAndar(@PathParam("preco") float preco, @PathParam("andar") Andar andar) {
-        String []fields = {"preco", "andar"};
-        Object []values = {preco, andar};
-        return dao.findByFields(fields, values );
+    public List<Hotel> findByCidade(@PathParam("cidadeId") long cidadeId) {
+        return dao.findByCidade(cidadeId);
     }
+   
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void insert(Quarto quarto) {
+    public void insert(Hotel quarto) {
         dao.save(quarto);
     }
     
@@ -55,13 +55,13 @@ public class QuartoResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public boolean remove(@PathParam("id") long id) {
-        Quarto quarto=dao.findById(id);
+        Hotel quarto=dao.findById(id);
         return dao.remove(quarto);
     }
     
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public void update(Quarto quarto){
+    public void update(Hotel quarto){
         dao.save(quarto);
     }
     }
