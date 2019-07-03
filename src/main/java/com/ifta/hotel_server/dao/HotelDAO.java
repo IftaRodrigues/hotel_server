@@ -29,5 +29,14 @@ public class HotelDAO extends JpaDAO<Hotel>{
     
     }
     
+    public List<Hotel> findByBairro(long bairroId){
+        final String jpql = "select o from Hotel o " +
+                            " where o.bairro.id = :bairroId";
+        TypedQuery<Hotel> query = getEm().createQuery(jpql, Hotel.class);
+        query.setParameter("bairroId", bairroId);
+        return query.getResultList();
     
+    }
+    
+  
 }

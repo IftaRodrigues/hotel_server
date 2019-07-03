@@ -19,7 +19,8 @@ public class Andar implements Serializable, Cadastro{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;   
+    private long id;
+    
     @OneToMany(mappedBy = "andar_quarto",cascade = CascadeType.ALL)
     private List<Quarto> quartos = new ArrayList<Quarto>();
     

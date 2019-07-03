@@ -6,10 +6,9 @@
 package com.ifta.hotel_server.rest;
 
 
-import com.ifta.hotel_server.dao.DAO;
 import com.ifta.hotel_server.dao.HotelDAO;
-import com.ifta.hotel_server.model.Andar;
 import com.ifta.hotel_server.model.Hotel;
+import com.ifta.hotel_server.model.Quarto;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -25,7 +24,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author ifta
  */
-@Path("/quarto")
+@Path("/hotel")
 public class HotelResource {
     @Inject
     private HotelDAO dao;
@@ -38,12 +37,40 @@ public class HotelResource {
     }
      
     @GET
-    @Path("{cidadeId}")
+    @Path("cidade/{cidadeId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Hotel> findByCidade(@PathParam("cidadeId") long cidadeId) {
-        return dao.findByCidade(cidadeId);
+        List<Hotel> hoteis = dao.findByCidade(cidadeId);
+        return removeAndares(hoteis);
     }
    
+    @GET
+    @Path("bairro/{bairroId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Hotel> findByBairro(@PathParam("bairroId") long bairroId) {
+        List<Hotel> hoteis = dao.findByBairro(bairroId);
+        return removeAndares(hoteis);
+    }
+
+    private List<Hotel> removeAndares(List<Hotel> hoteis) {
+        for (Hotel hotel : hoteis) {
+            hotel.setAndares(null);
+        }
+        return hoteis;
+    }
+    
+    //perguntar qual esta mais proximo de estar certo
+    @GET
+    @Path("/{cidadeId}/{preco}/{camas}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Hotel> findByVarios(@PathParam("cidadeId") long cidadeId,
+            @PathParam("preco") float preco,
+             @PathParam("camas") int camas) {
+        List<Hotel> hoteis = dao.buscaHoteisCidadePrecoCamas(cidadeId, preco, camas);
+        
+        return removeAndares(hoteis);
+   }
+    
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -60,7 +87,7 @@ public class HotelResource {
     }
     
     @PUT
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public void update(Hotel quarto){
         dao.save(quarto);
     }

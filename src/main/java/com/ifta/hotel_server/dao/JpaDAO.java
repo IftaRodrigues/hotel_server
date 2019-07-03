@@ -1,7 +1,9 @@
 package com.ifta.hotel_server.dao;
 
 import com.ifta.hotel_server.model.Cadastro;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 public class JpaDAO<T extends Cadastro> implements DAO<T> {
@@ -61,9 +63,24 @@ public class JpaDAO<T extends Cadastro> implements DAO<T> {
     }
 
     /**
-     * @return the em
+     * 
      */
     public EntityManager getEm() {
         return em;
     }
+    
+    public List<T> buscaHoteisCidadePrecoCamas(long id, float preco, int camas) {
+        final String jpql = "select hotel from "+classe.getSimpleName()+" as hotel "
+                + "where hotel.bairro.id in (select bairro.id from Bairro bairro "
+                + "where bairro.cidade.id = :parametro) and hotel.id in ("
+                + "select quarto.andar_quarto.hotel.id from Quarto quarto "
+                + "where quarto.preco = :parametro2 and "
+                + "quarto.camas = :parametro3)";
+        Query query = em.createQuery(jpql, classe);
+        query.setParameter("parametro", id);
+        query.setParameter("parametro2", preco);
+        query.setParameter("parametro3", camas);
+        return query.getResultList();
+}
+    
 }
