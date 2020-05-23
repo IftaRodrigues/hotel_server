@@ -3,7 +3,7 @@ Projeto Final da matéria de Sistemas Distribuídos e SOA do 4º período de Tec
 
 Sistema de buscas de Hoteis, usando REST, JPA Hibernate e CDI.
 
-Foi solicitado a avaliação a criação de um sistema que possuísse tabelas para cadastro de cidades, estados, bairros e hotéis e que deveriam ser disponibilizados os seguintes endpoints REST:
+Foi solicitado na avaliação a criação de um sistema que possuísse tabelas para cadastro de cidades, estados, bairros e hotéis e que deveriam ser disponibilizados os seguintes endpoints REST:
 
 - [x] consultar hotéis por cidade
 
